@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- ============================================================
-     WHITE WOODLANDS. Before you publish, replace every [BRACKET]:
-       [EMAIL]            your White Woodlands email once it is set up
-       [FORM-EMBED-URL]   your Tally / Google Form embed link (see the booking section)
+     WHITE WOODLANDS. One [BRACKET] left to replace when you have it:
        [OG-IMAGE-URL]     a hosted 1200x630 share image (a photo of the kit works well)
      ============================================================ -->
 
@@ -40,7 +38,6 @@
   "name": "White Woodlands",
   "description": "Silent disco headset hire for parties and events across Berkshire and Oxfordshire. 24 three-channel LED headsets available for local collection and return.",
   "url": "https://whitewoodlands.com/",
-  "email": "[EMAIL]",
   "priceRange": "££",
   "image": "[OG-IMAGE-URL]",
   "areaServed": [
@@ -375,20 +372,47 @@
          the .fallback block underneath.
          ============================================================ -->
     <div class="form-slot">
-      <!-- <iframe src="[FORM-EMBED-URL]" title="Booking enquiry form" loading="lazy"></iframe> -->
-
-      <!-- Working fallback until the embed is connected: -->
-      <form class="fallback" action="mailto:[EMAIL]" method="post" enctype="text/plain" style="padding:20px">
+      <form id="enquiry" class="fallback" action="https://api.web3forms.com/submit" method="POST" style="padding:20px">
+        <input type="hidden" name="access_key" value="d109e95d-f734-423a-b81e-af59fdab62d0">
+        <input type="hidden" name="subject" value="New White Woodlands booking enquiry">
+        <input type="hidden" name="from_name" value="White Woodlands website">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <div class="field"><label for="name">Your name</label><input id="name" name="name" type="text" required></div>
-        <div class="field"><label for="date">Event date</label><input id="date" name="date" type="date" required></div>
+        <div class="field"><label for="date">Event date</label><input id="date" name="event_date" type="date" required></div>
         <div class="field"><label for="guests">Rough guest numbers</label><input id="guests" name="guests" type="number" min="1" placeholder="e.g. 20"></div>
-        <div class="field"><label for="contact">Email or phone</label><input id="contact" name="contact" type="text" required></div>
+        <div class="field"><label for="contact">Your email</label><input id="contact" name="email" type="email" required placeholder="you@example.com"></div>
         <div class="field"><label for="msg">Anything else?</label><textarea id="msg" name="message" rows="3" placeholder="Type of event, location, questions…"></textarea></div>
         <button class="btn" type="submit">Send enquiry</button>
+        <p id="form-note" class="quick" style="margin-top:14px;display:none"></p>
       </form>
     </div>
+    <script>
+      (function(){
+        var f=document.getElementById('enquiry');
+        var note=document.getElementById('form-note');
+        f.addEventListener('submit',function(e){
+          e.preventDefault();
+          var btn=f.querySelector('button');
+          btn.textContent='Sending...';btn.disabled=true;
+          fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Accept':'application/json'},body:new FormData(f)})
+            .then(function(r){return r.json();})
+            .then(function(data){
+              if(data.success){
+                f.innerHTML='<p style="color:var(--lime);font-family:var(--serif);font-size:1.25rem;padding:8px 0">Thank you. Your enquiry is on its way, and we will be in touch very soon to confirm your date.</p>';
+              }else{
+                btn.textContent='Send enquiry';btn.disabled=false;
+                note.style.display='block';note.textContent='Sorry, something went wrong. Please try again in a moment.';
+              }
+            })
+            .catch(function(){
+              btn.textContent='Send enquiry';btn.disabled=false;
+              note.style.display='block';note.textContent='Sorry, something went wrong. Please try again in a moment.';
+            });
+        });
+      })();
+    </script>
 
-    <p class="quick">Prefer email? Reach us any time at <a href="mailto:[EMAIL]">[EMAIL]</a>. The booking form above is the quickest way to check your date.</p>
+    <p class="quick">Fill in the form above and we will get straight back to you. We reply to every enquiry personally.</p>
   </div>
 </section>
 
@@ -417,7 +441,7 @@
       <div>Serving Berkshire, Oxfordshire and the surrounding areas.</div>
     </div>
     <div>
-      <div><a href="mailto:[EMAIL]">[EMAIL]</a></div>
+      <div><a href="#book">Check your date</a></div>
       <div style="margin-top:8px">© 2026 White Woodlands. A small local family hire.</div>
     </div>
   </div>
