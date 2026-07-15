@@ -275,6 +275,18 @@
              font-family:var(--sans);font-size:1rem;background:rgba(255,255,255,.06);color:var(--ink);color-scheme:dark}
   .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.4)}
   .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--mag);border-color:var(--mag)}
+  .choice{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .choice input{position:absolute;opacity:0;pointer-events:none}
+  .choice label{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
+       padding:14px 6px;border:1.5px solid var(--line);border-radius:12px;background:rgba(255,255,255,.05);
+       transition:border-color .15s,box-shadow .2s,transform .12s}
+  .choice label b{font-family:var(--serif);font-size:1.35rem;color:#fff;line-height:1}
+  .choice label span{font-size:.85rem;color:var(--muted)}
+  .choice label:hover{transform:translateY(-2px);border-color:rgba(24,224,255,.55)}
+  .choice input:checked+label{border-color:var(--mag);background:rgba(255,46,151,.16);box-shadow:0 0 18px rgba(255,46,151,.3)}
+  .choice input:checked+label span{color:#fff}
+  .choice input:focus-visible+label{outline:2px solid var(--cyan);outline-offset:2px}
+  @media(max-width:420px){.choice{grid-template-columns:1fr 1fr}}
   .quick{margin-top:22px;color:var(--muted);font-size:.95rem}
 
   footer{padding:52px 0;color:var(--muted);font-size:.92rem;position:relative;z-index:2;border-top:1px solid var(--line)}
@@ -410,16 +422,18 @@
         <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <div class="field"><label for="name">Your name</label><input id="name" name="name" type="text" required></div>
         <div class="field"><label for="date">Event date</label><input id="date" name="event_date" type="date" required></div>
-        <div class="field"><label for="headsets">How many headsets?</label>
-          <select id="headsets" name="headsets" required>
-            <option value="">Choose an option</option>
-            <option value="6 headsets (£40)">6 headsets (£40)</option>
-            <option value="12 headsets (£60)">12 headsets (£60)</option>
-            <option value="18 headsets (£75)">18 headsets (£75)</option>
-            <option value="24 headsets (£90)">24 headsets (£90)</option>
-          </select>
+        <div class="field"><label>How many headsets?</label>
+          <div class="choice">
+            <input type="radio" id="h6" name="headsets" value="6 headsets (£40)">
+            <label for="h6"><b>6</b><span>£40</span></label>
+            <input type="radio" id="h12" name="headsets" value="12 headsets (£60)">
+            <label for="h12"><b>12</b><span>£60</span></label>
+            <input type="radio" id="h18" name="headsets" value="18 headsets (£75)">
+            <label for="h18"><b>18</b><span>£75</span></label>
+            <input type="radio" id="h24" name="headsets" value="24 headsets (£90)">
+            <label for="h24"><b>24</b><span>£90</span></label>
+          </div>
         </div>
-        <div class="field"><label for="guests">Rough guest numbers</label><input id="guests" name="guests" type="number" min="1" placeholder="e.g. 20"></div>
         <div class="field"><label for="contact">Your email</label><input id="contact" name="email" type="email" required placeholder="you@example.com"></div>
         <div class="field"><label for="msg">Anything else?</label><textarea id="msg" name="message" rows="3" placeholder="Type of event, location, questions…"></textarea></div>
         <button class="btn" type="submit">Send enquiry</button>
@@ -432,7 +446,12 @@
         var note=document.getElementById('form-note');
         f.addEventListener('submit',function(e){
           e.preventDefault();
+          if(!f.querySelector('input[name="headsets"]:checked')){
+            note.style.display='block';note.textContent='Please choose how many headsets you would like.';
+            return;
+          }
           var btn=f.querySelector('button');
+          note.style.display='none';
           btn.textContent='Sending...';btn.disabled=true;
           fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Accept':'application/json'},body:new FormData(f)})
             .then(function(r){return r.json();})
