@@ -323,12 +323,25 @@
 
 <!-- HERO -->
 <section class="hero">
-  <svg class="hero-art" viewBox="0 0 200 200" aria-hidden="true">
-    <g fill="none" stroke="#18e0ff" stroke-width="6"><path d="M40 110a60 60 0 0 1 120 0"/>
-    <rect x="26" y="106" width="36" height="64" rx="18"/><rect x="138" y="106" width="36" height="64" rx="18"/></g>
-    <circle class="led r" cx="44" cy="138" r="7" fill="#ff3b6b"/>
-    <circle class="led g" cx="156" cy="138" r="7" fill="#3dff9e"/>
-    <circle class="led b" cx="100" cy="52" r="7" fill="#3ea8ff"/>
+  <svg class="hero-art" viewBox="0 0 240 240" aria-hidden="true">
+    <defs>
+      <filter id="glow3" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <g fill="none" stroke-width="7" stroke-linecap="round" filter="url(#glow3)">
+      <circle cx="120" cy="120" r="34" stroke="#ff3b6b" stroke-dasharray="150 60">
+        <animateTransform attributeName="transform" type="rotate" from="0 120 120" to="360 120 120" dur="9s" repeatCount="indefinite"/></circle>
+      <circle cx="120" cy="120" r="52" stroke="#3dff9e" stroke-dasharray="220 100">
+        <animateTransform attributeName="transform" type="rotate" from="360 120 120" to="0 120 120" dur="12s" repeatCount="indefinite"/></circle>
+      <circle cx="120" cy="120" r="70" stroke="#3ea8ff" stroke-dasharray="300 140">
+        <animateTransform attributeName="transform" type="rotate" from="0 120 120" to="360 120 120" dur="16s" repeatCount="indefinite"/></circle>
+    </g>
+    <g fill="none" stroke="#f4f2ff" stroke-width="6" stroke-linecap="round" filter="url(#glow3)">
+      <path d="M104 122 A16 16 0 0 1 136 122"/>
+      <rect x="99" y="119" width="9" height="18" rx="4.5"/>
+      <rect x="132" y="119" width="9" height="18" rx="4.5"/>
+    </g>
   </svg>
   <div class="wrap" id="pitch">
     <p class="eyebrow">Silent Disco Hire · Berkshire &amp; Oxfordshire</p>
