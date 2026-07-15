@@ -55,15 +55,11 @@
     "opens": "08:00", "closes": "20:00"
   },
   "makesOffer": {
-    "@type": "Offer",
-    "name": "Silent Disco Headset Hire, 24 headsets",
+    "@type": "AggregateOffer",
     "priceCurrency": "GBP",
-    "price": "90",
-    "priceSpecification": {
-      "@type": "UnitPriceSpecification",
-      "price": "90", "priceCurrency": "GBP",
-      "unitText": "per weekend hire (24 headsets)"
-    },
+    "lowPrice": "40",
+    "highPrice": "90",
+    "offerCount": "4",
     "itemOffered": {
       "@type": "Service",
       "name": "Silent Disco Headset Hire",
@@ -81,8 +77,8 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How many people do 24 silent disco headsets cover?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Twenty-four headsets comfortably cover a party of around 20 to 25 people. Guests can share and swap over the evening, so it suits gatherings a little larger than that too." }
+      "name": "How many headsets do I need?",
+      "acceptedAnswer": { "@type": "Answer", "text": "As a rough guide: 6 suits a small get-together, 12 a lively party, 18 a big garden do, and 24 a full crowd of around 20 to 25 people. Guests share and swap, so you do not need one each." }
     },
     {
       "@type": "Question",
@@ -102,7 +98,12 @@
     {
       "@type": "Question",
       "name": "How much does silent disco hire cost?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Local hire of all 24 headsets is £90 for the weekend, including the transmitters and charging. A small refundable deposit covers any loss or damage." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Per weekend: 6 headsets are £40, 12 are £60, 18 are £75, and all 24 are £90, each including the transmitters and charging. A refundable £30 deposit is taken at collection and returned when the kit comes back complete." }
+    },
+    {
+      "@type": "Question",
+      "name": "What if a headset is lost or damaged?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A refundable £30 deposit is taken at collection and covers small mishaps. While the kit is with you it is your responsibility, and any loss or damage beyond the deposit is charged at the cost of repair or replacement, as set out in the hire terms." }
     },
     {
       "@type": "Question",
@@ -223,6 +224,20 @@
   .num{font-family:var(--serif);font-size:1.7rem;display:block;margin-bottom:8px;font-weight:700;
        background:linear-gradient(90deg,var(--mag),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
 
+  /* pricing cards */
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  @media(max-width:760px){.grid4{grid-template-columns:1fr 1fr}}
+  @media(max-width:420px){.grid4{grid-template-columns:1fr}}
+  .pcard{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;padding:24px 20px;
+         text-align:center;backdrop-filter:blur(6px);transition:transform .18s,box-shadow .3s,border-color .3s}
+  .pcard:hover{transform:translateY(-4px);border-color:rgba(24,224,255,.5);box-shadow:0 12px 40px rgba(24,224,255,.22)}
+  .pcard .pcount{display:block;font-family:var(--serif);font-size:2.4rem;font-weight:700;color:#fff;line-height:1}
+  .pcard .punit{display:block;color:var(--muted);font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;margin:4px 0 14px}
+  .pcard .pprice{display:block;font-family:var(--serif);font-size:1.9rem;font-weight:700;
+                 background:linear-gradient(90deg,var(--mag),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pcard .pfor{display:block;color:var(--muted);font-size:.9rem;margin-top:8px}
+  .pcard.featured{border-color:rgba(255,46,151,.6);box-shadow:0 0 28px rgba(255,46,151,.25)}
+
   /* included list */
   .incl{list-style:none;padding:0;margin:0;columns:2;column-gap:40px}
   .incl li{padding:11px 0 11px 30px;position:relative;break-inside:avoid;color:var(--ink)}
@@ -256,10 +271,10 @@
   .fallback{max-width:560px}
   .field{margin-bottom:16px}
   .field label{display:block;font-size:.85rem;font-weight:700;margin-bottom:6px;color:var(--ink)}
-  .field input,.field textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;
+  .field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;
              font-family:var(--sans);font-size:1rem;background:rgba(255,255,255,.06);color:var(--ink);color-scheme:dark}
   .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.4)}
-  .field input:focus,.field textarea:focus{outline:2px solid var(--mag);border-color:var(--mag)}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--mag);border-color:var(--mag)}
   .quick{margin-top:22px;color:var(--muted);font-size:.95rem}
 
   footer{padding:52px 0;color:var(--muted);font-size:.92rem;position:relative;z-index:2;border-top:1px solid var(--line)}
@@ -287,6 +302,7 @@
     <nav class="links" aria-label="Primary">
       <a href="#how">How it works</a>
       <a href="#included">What's included</a>
+      <a href="#pricing">Prices</a>
       <a href="#faq">FAQs</a>
       <a href="#book">Book</a>
     </nav>
@@ -305,8 +321,8 @@
   <div class="wrap" id="pitch">
     <p class="eyebrow">Silent Disco Hire · Berkshire &amp; Oxfordshire</p>
     <h1>Bring the party. We'll bring the <em>silence</em>.</h1>
-    <p class="lede">Twenty-four wireless LED headsets, three glowing channels, charged and ready, for weddings, birthdays and garden parties across Berkshire and Oxfordshire.</p>
-    <div class="price-tag"><b>£90</b><small>per weekend · all 24 headsets · local collection and return</small></div>
+    <p class="lede">Wireless LED headsets with three glowing channels, charged and ready, for weddings, birthdays and garden parties across Berkshire and Oxfordshire.</p>
+    <div class="price-tag"><b>from £40</b><small>per weekend · 6 to 24 headsets · local collection and return</small></div>
     <div class="cta-row">
       <a class="btn" href="#book">Check your date</a>
       <a class="btn-ghost" href="#how">How it works</a>
@@ -333,7 +349,7 @@
     <h2 class="sec">What's included</h2>
     <p class="sec-sub">Everything you need for up to around 25 guests, in one case.</p>
     <ul class="incl">
-      <li>24 three-channel LED headsets</li>
+      <li>Up to 24 three-channel LED headsets</li>
       <li>Transmitters for three live channels</li>
       <li>Fully charged before every hire</li>
       <li>Cleaned and tested each time</li>
@@ -345,15 +361,30 @@
   </div>
 </section>
 
+<!-- PRICING -->
+<section id="pricing" class="band">
+  <div class="wrap">
+    <h2 class="sec">Pick your size</h2>
+    <p class="sec-sub">Whatever the party, there is a set to match. Prices are per weekend, local collection and return, with a refundable £30 deposit.</p>
+    <div class="grid4">
+      <div class="pcard"><span class="pcount">6</span><span class="punit">headsets</span><span class="pprice">£40</span><span class="pfor">a small get-together</span></div>
+      <div class="pcard"><span class="pcount">12</span><span class="punit">headsets</span><span class="pprice">£60</span><span class="pfor">a lively party</span></div>
+      <div class="pcard"><span class="pcount">18</span><span class="punit">headsets</span><span class="pprice">£75</span><span class="pfor">a big garden do</span></div>
+      <div class="pcard featured"><span class="pcount">24</span><span class="punit">headsets</span><span class="pprice">£90</span><span class="pfor">a full crowd</span></div>
+    </div>
+    <p class="sec-sub" style="margin-top:24px;margin-bottom:0"><a href="#book">Check your date</a> and tell us how many you would like.</p>
+  </div>
+</section>
+
 <!-- KEY FACTS (GEO-friendly summary) -->
 <section id="keyfacts">
   <div class="wrap">
     <h2 class="sec">The essentials</h2>
     <p class="sec-sub" style="color:rgba(255,255,255,.8)">White Woodlands at a glance.</p>
     <div class="facts">
-      <div><b>24</b><span>LED headsets</span></div>
+      <div><b>6-24</b><span>LED headsets</span></div>
       <div><b>3</b><span>music channels</span></div>
-      <div><b>£90</b><span>per weekend</span></div>
+      <div><b>from £40</b><span>per weekend</span></div>
       <div><b>~50m</b><span>signal range</span></div>
     </div>
   </div>
@@ -379,6 +410,15 @@
         <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <div class="field"><label for="name">Your name</label><input id="name" name="name" type="text" required></div>
         <div class="field"><label for="date">Event date</label><input id="date" name="event_date" type="date" required></div>
+        <div class="field"><label for="headsets">How many headsets?</label>
+          <select id="headsets" name="headsets" required>
+            <option value="">Choose an option</option>
+            <option value="6 headsets (£40)">6 headsets (£40)</option>
+            <option value="12 headsets (£60)">12 headsets (£60)</option>
+            <option value="18 headsets (£75)">18 headsets (£75)</option>
+            <option value="24 headsets (£90)">24 headsets (£90)</option>
+          </select>
+        </div>
         <div class="field"><label for="guests">Rough guest numbers</label><input id="guests" name="guests" type="number" min="1" placeholder="e.g. 20"></div>
         <div class="field"><label for="contact">Your email</label><input id="contact" name="email" type="email" required placeholder="you@example.com"></div>
         <div class="field"><label for="msg">Anything else?</label><textarea id="msg" name="message" rows="3" placeholder="Type of event, location, questions…"></textarea></div>
@@ -412,7 +452,7 @@
       })();
     </script>
 
-    <p class="quick">Fill in the form above and we will get straight back to you. We reply to every enquiry personally.</p>
+    <p class="quick">Fill in the form above and we will get straight back to you. We reply to every enquiry personally. By booking you agree to our <a href="terms.html">hire terms</a>, which include a refundable £30 deposit.</p>
   </div>
 </section>
 
@@ -422,11 +462,12 @@
     <h2 class="sec">Frequently asked questions</h2>
     <p class="sec-sub">The things people usually want to know before they book.</p>
 
-    <details open><summary>How many people do 24 headsets cover?</summary><p>Twenty-four headsets comfortably cover a party of around 20 to 25 people. Guests can share and swap over the evening, so it suits slightly larger gatherings too.</p></details>
+    <details open><summary>How many headsets do I need?</summary><p>As a rough guide: 6 suits a small get-together, 12 a lively party, 18 a big garden do, and 24 a full crowd of around 20 to 25. Guests happily share and swap, so you do not need one each.</p></details>
     <details><summary>How far does the signal reach?</summary><p>The headsets pick up the transmitter from roughly 50 metres in the open, enough for a typical house, garden or hall. Thick stone walls shorten the range a little.</p></details>
     <details><summary>How does a silent disco actually work?</summary><p>Music is broadcast wirelessly to everyone's headphones instead of through speakers. Each headset has three channels, so guests can switch between playlists or DJs and take the headphones off to chat whenever they like.</p></details>
     <details><summary>Do you deliver, or do I collect?</summary><p>We're a local collection and return hire across Berkshire and Oxfordshire. You pick the kit up charged and ready, and drop it back after your event.</p></details>
-    <details><summary>What does it cost, and is there a deposit?</summary><p>Local hire of all 24 headsets is £90 for the weekend, including transmitters and charging. A small refundable deposit covers any loss or damage and comes straight back to you on return.</p></details>
+    <details><summary>What does it cost, and is there a deposit?</summary><p>Per weekend: 6 headsets are £40, 12 are £60, 18 are £75, and all 24 are £90, each including the transmitters and charging. We also take a refundable £30 deposit at collection, which comes straight back to you when the kit is returned complete and working.</p></details>
+    <details><summary>What if a headset gets lost or damaged?</summary><p>The £30 deposit covers small mishaps and is refunded when everything comes back in good order. While the kit is with you it is your responsibility, and for any loss or damage beyond the deposit we ask you to cover the cost of repair or replacement. It is all set out plainly in our <a href="terms.html">hire terms</a>.</p></details>
     <details><summary>How long do I get the kit for?</summary><p>The standard hire covers a full weekend. Collect Friday or Saturday and return the next working day. Longer hires can be arranged, just ask.</p></details>
     <details><summary>Are the headphones charged and clean?</summary><p>Always. Every headset is fully charged, tested and wiped down before collection, so they work straight from the case.</p></details>
   </div>
@@ -441,7 +482,7 @@
       <div>Serving Berkshire, Oxfordshire and the surrounding areas.</div>
     </div>
     <div>
-      <div><a href="#book">Check your date</a></div>
+      <div><a href="#book">Check your date</a> · <a href="terms.html">Hire terms</a></div>
       <div style="margin-top:8px">© 2026 White Woodlands. A small local family hire.</div>
     </div>
   </div>
